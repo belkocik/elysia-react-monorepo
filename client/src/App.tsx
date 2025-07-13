@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import './App.css'
 import reactLogo from './assets/react.svg'
 import elysiaLogo from './assets/elysia.svg'
 import viteLogo from '/vite.svg'
-import type { ApiResponse } from 'shared'
-import './App.css'
+import { useState } from 'react'
+import type { App } from 'server/src'
+import { treaty } from '@elysiajs/eden'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
+const api = treaty<App>(SERVER_URL)
+
+type HelloResponse = Awaited<ReturnType<typeof api.hello.get>>['data']
 
 function App() {
-  const [data, setData] = useState<ApiResponse | undefined>()
+  const [data, setData] = useState<HelloResponse>()
 
   async function sendRequest() {
     try {
-      const req = await fetch(`${SERVER_URL}/hello`)
-      const res: ApiResponse = await req.json()
-      setData(res)
+      const { data } = await api.hello.get()
+      setData(data)
     } catch (error) {
       console.log(error)
     }
