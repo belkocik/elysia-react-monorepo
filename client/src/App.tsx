@@ -3,11 +3,11 @@ import reactLogo from './assets/react.svg'
 import elysiaLogo from './assets/elysia.svg'
 import viteLogo from '/vite.svg'
 import { useState } from 'react'
-import type { App } from 'server/src'
+import type { App as BackendApp } from '@server/index'
 import { treaty } from '@elysiajs/eden'
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
-const api = treaty<App>(SERVER_URL)
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:9999'
+const api = treaty<BackendApp>(SERVER_URL)
 
 type HelloResponse = Awaited<ReturnType<typeof api.hello.get>>['data']
 
